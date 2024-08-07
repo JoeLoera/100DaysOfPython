@@ -190,59 +190,102 @@
 #         move()
 #     else:
 #         turn_left()
-import random
+# import random
 
-from hangman_words import word_list
-from hangman_art import stages, logo
+# from hangman_words import word_list
+# from hangman_art import stages, logo
 
-lives = 6
+# lives = 6
 
-print(logo)
+# print(logo)
 
-chosen_word = random.choice(word_list)
-print(chosen_word)
+# chosen_word = random.choice(word_list)
+# print(chosen_word)
 
-placeholder = ""
-word_length = len(chosen_word)
-for position in range(word_length):
-    placeholder += "_"
-print("Word to guess: " + placeholder)
+# placeholder = ""
+# word_length = len(chosen_word)
+# for position in range(word_length):
+#     placeholder += "_"
+# print("Word to guess: " + placeholder)
 
-game_over = False
-correct_letters = []
+# game_over = False
+# correct_letters = []
 
-while not game_over:
+# while not game_over:
 
-    print(f"****************************{lives}/6 LIVES LEFT****************************")
-    guess = input("Guess a letter: ").lower()
+#     print(f"****************************{lives}/6 LIVES LEFT****************************")
+#     guess = input("Guess a letter: ").lower()
 
-    if guess in correct_letters:
-        print(f"You've already guessed {guess}")
+#     if guess in correct_letters:
+#         print(f"You've already guessed {guess}")
 
-    display = ""
+#     display = ""
 
-    for letter in chosen_word:
-        if letter == guess:
-            display += letter
-            correct_letters.append(guess)
-        elif letter in correct_letters:
-            display += letter
+#     for letter in chosen_word:
+#         if letter == guess:
+#             display += letter
+#             correct_letters.append(guess)
+#         elif letter in correct_letters:
+#             display += letter
+#         else:
+#             display += "_"
+
+#     print("Word to guess: " + display)
+
+#     if guess not in chosen_word:
+#         lives -= 1
+#         print(f"You guessed {guess}, that's not in the word. You lose a life.")
+
+#         if lives == 0:
+#             game_over = True
+
+#             print(f"***********************IT WAS {chosen_word}! YOU LOSE**********************")
+
+#     if "_" not in display:
+#         game_over = True
+#         print("****************************YOU WIN****************************")
+
+#     print(stages[lives])
+
+
+# 1: Import and print the logo from art.py when the program starts.
+import art
+print(art.logo)
+
+alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+# 2: What happens if the user enters a number/symbol/space?
+
+
+def caesar(original_text, shift_amount, encode_or_decode):
+    output_text = ""
+    for letter in original_text:
+
+        if letter not in alphabet:
+            output_text += letter
         else:
-            display += "_"
+            if encode_or_decode == "decode":
+                shift_amount *= -1
 
-    print("Word to guess: " + display)
+            shifted_position = alphabet.index(letter) + shift_amount
+            shifted_position %= len(alphabet)
+            output_text += alphabet[shifted_position]
+    print(f"Here is the {encode_or_decode}d result: {output_text}")
 
-    if guess not in chosen_word:
-        lives -= 1
-        print(f"You guessed {guess}, that's not in the word. You lose a life.")
 
-        if lives == 0:
-            game_over = True
+# 3: Can you figure out a way to restart the cipher program?
 
-            print(f"***********************IT WAS {chosen_word}! YOU LOSE**********************")
+should_continue = True
 
-    if "_" not in display:
-        game_over = True
-        print("****************************YOU WIN****************************")
+while should_continue:
 
-    print(stages[lives])
+    direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n").lower()
+    text = input("Type your message:\n").lower()
+    shift = int(input("Type the shift number:\n"))
+
+    caesar(original_text=text, shift_amount=shift, encode_or_decode=direction)
+
+    restart = input("Type 'yes' if you want to go again. Otherwise, type 'no'.\n").lower()
+    if restart == "no":
+        should_continue = False
+        print("Goodbye")
