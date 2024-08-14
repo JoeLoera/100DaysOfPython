@@ -248,44 +248,97 @@
 #     print(stages[lives])
 
 
-# 1: Import and print the logo from art.py when the program starts.
+# # 1: Import and print the logo from art.py when the program starts.
+# import art
+# print(art.logo)
+
+# alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+# # 2: What happens if the user enters a number/symbol/space?
+
+
+# def caesar(original_text, shift_amount, encode_or_decode):
+#     output_text = ""
+#     for letter in original_text:
+
+#         if letter not in alphabet:
+#             output_text += letter
+#         else:
+#             if encode_or_decode == "decode":
+#                 shift_amount *= -1
+
+#             shifted_position = alphabet.index(letter) + shift_amount
+#             shifted_position %= len(alphabet)
+#             output_text += alphabet[shifted_position]
+#     print(f"Here is the {encode_or_decode}d result: {output_text}")
+
+
+# # 3: Can you figure out a way to restart the cipher program?
+
+# should_continue = True
+
+# while should_continue:
+
+#     direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n").lower()
+#     text = input("Type your message:\n").lower()
+#     shift = int(input("Type the shift number:\n"))
+
+#     caesar(original_text=text, shift_amount=shift, encode_or_decode=direction)
+
+#     restart = input("Type 'yes' if you want to go again. Otherwise, type 'no'.\n").lower()
+#     if restart == "no":
+#         should_continue = False
+#         print("Goodbye")
+
+
 import art
-print(art.logo)
 
-alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+def add(n1, n2):
+    return n1 + n2
 
-# 2: What happens if the user enters a number/symbol/space?
+#TODO Write out the 3 other functions - subtract multiple and divide
+
+def subtract(n1,n2):
+    return n1 - n2
+
+def multiply(n1,n2):
+    return n1 * n2
+
+def divide(n1,n2):
+    return n1 / n2
+
+#ToDo Add these 4 functions to a dictionary
+operators_dict = {
+    "+": add,
+    "-": subtract,
+    "*": multiply,
+    "/": divide
+}
+
+#ToDo Use the dictionary operations to perform the calculations. Multiply 4*8 using dictionary
+
+# print(operators_dict["*"](4,8))
 
 
-def caesar(original_text, shift_amount, encode_or_decode):
-    output_text = ""
-    for letter in original_text:
+def calculator():
+    print(art.logo)
+    should_accumulate = True
+    num1 = float(input("What is the first number?: "))
 
-        if letter not in alphabet:
-            output_text += letter
+    while should_accumulate:
+        for symbol in operators_dict:
+            print(symbol)
+        operation_symbol = input("Pick an operation: ")
+        num2 = float(input("What is the next number?: "))
+        answer = operators_dict[operation_symbol](num1,num2)
+        print(f"{num1}{operation_symbol}{num2} = {answer}")
+
+        choice = input(f"Type 'y' to continue calculating with {answer}, or type 'n' to start a new calculation ")
+
+        if choice == "y":
+            num1 = answer
         else:
-            if encode_or_decode == "decode":
-                shift_amount *= -1
-
-            shifted_position = alphabet.index(letter) + shift_amount
-            shifted_position %= len(alphabet)
-            output_text += alphabet[shifted_position]
-    print(f"Here is the {encode_or_decode}d result: {output_text}")
-
-
-# 3: Can you figure out a way to restart the cipher program?
-
-should_continue = True
-
-while should_continue:
-
-    direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n").lower()
-    text = input("Type your message:\n").lower()
-    shift = int(input("Type the shift number:\n"))
-
-    caesar(original_text=text, shift_amount=shift, encode_or_decode=direction)
-
-    restart = input("Type 'yes' if you want to go again. Otherwise, type 'no'.\n").lower()
-    if restart == "no":
-        should_continue = False
-        print("Goodbye")
+            should_accumulate = False
+            print("\n" * 20)
+            calculator()
+calculator()
