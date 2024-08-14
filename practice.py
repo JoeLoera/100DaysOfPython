@@ -291,54 +291,130 @@
 #         print("Goodbye")
 
 
+# import art
+
+# def add(n1, n2):
+#     return n1 + n2
+
+# #TODO Write out the 3 other functions - subtract multiple and divide
+
+# def subtract(n1,n2):
+#     return n1 - n2
+
+# def multiply(n1,n2):
+#     return n1 * n2
+
+# def divide(n1,n2):
+#     return n1 / n2
+
+# #ToDo Add these 4 functions to a dictionary
+# operators_dict = {
+#     "+": add,
+#     "-": subtract,
+#     "*": multiply,
+#     "/": divide
+# }
+
+# #ToDo Use the dictionary operations to perform the calculations. Multiply 4*8 using dictionary
+
+# # print(operators_dict["*"](4,8))
+
+
+# def calculator():
+#     print(art.logo)
+#     should_accumulate = True
+#     num1 = float(input("What is the first number?: "))
+
+#     while should_accumulate:
+#         for symbol in operators_dict:
+#             print(symbol)
+#         operation_symbol = input("Pick an operation: ")
+#         num2 = float(input("What is the next number?: "))
+#         answer = operators_dict[operation_symbol](num1,num2)
+#         print(f"{num1}{operation_symbol}{num2} = {answer}")
+
+#         choice = input(f"Type 'y' to continue calculating with {answer}, or type 'n' to start a new calculation ")
+
+#         if choice == "y":
+#             num1 = answer
+#         else:
+#             should_accumulate = False
+#             print("\n" * 20)
+#             calculator()
+# calculator()
+
+
+import random
 import art
+def deal_card():
+    #returns a random card from the deck
+    cards = [10,2,3,4,5,6,7,8,9,10,10,10,10]
+    card = random.choice(cards)
+    return card
 
-def add(n1, n2):
-    return n1 + n2
+def calculate_score(cards):
+    #Take a list of cards and return a caclulated score
+    if sum(cards) == 21 and len(cards) == 2:
+        return 0
 
-#TODO Write out the 3 other functions - subtract multiple and divide
+    if 11 in cards and sum(cards) > 21:
+        cards.remove(11)
+        cards.append(1)
 
-def subtract(n1,n2):
-    return n1 - n2
+    return sum(cards)
 
-def multiply(n1,n2):
-    return n1 * n2
+def compare(u_score, c_score):
+    if u_score == c_score:
+        return "Draw"
+    elif c_score == 0:
+        return "Lose, opponenet has Blackjack"
+    elif u_score == 0:
+        return "Win with a Blackjack"
+    elif u_score > 21:
+        return "You went over. You lose"
+    elif c_score > 21:
+        return "Opponent went over. You win"
+    elif u_score > c_score:
+        return "You win"
+    else:
+        return "You lose"
 
-def divide(n1,n2):
-    return n1 / n2
-
-#ToDo Add these 4 functions to a dictionary
-operators_dict = {
-    "+": add,
-    "-": subtract,
-    "*": multiply,
-    "/": divide
-}
-
-#ToDo Use the dictionary operations to perform the calculations. Multiply 4*8 using dictionary
-
-# print(operators_dict["*"](4,8))
-
-
-def calculator():
+def playgame():
     print(art.logo)
-    should_accumulate = True
-    num1 = float(input("What is the first number?: "))
+    user_cards = []
+    computer_cards = []
+    computer_score = -1
+    user_score = -1
+    is_game_over = False
 
-    while should_accumulate:
-        for symbol in operators_dict:
-            print(symbol)
-        operation_symbol = input("Pick an operation: ")
-        num2 = float(input("What is the next number?: "))
-        answer = operators_dict[operation_symbol](num1,num2)
-        print(f"{num1}{operation_symbol}{num2} = {answer}")
+    for _ in range (2):
+        user_cards.append(deal_card())
+        computer_cards.append(deal_card())
 
-        choice = input(f"Type 'y' to continue calculating with {answer}, or type 'n' to start a new calculation ")
+    while not is_game_over:
+        user_score = calculate_score(user_cards)
+        computer_score = calculate_score(computer_cards)
+        print(f"Your cards: {user_cards}, current score: {user_score}")
+        print(f"Computer's first card: {computer_cards[0]}")
 
-        if choice == "y":
-            num1 = answer
+        if user_score == 0 or computer_score == 0 or user_score > 21:
+            is_game_over = True
         else:
-            should_accumulate = False
-            print("\n" * 20)
-            calculator()
-calculator()
+            user_should_deal = input("Type 'y' to get another card, type 'n' to pass: ")
+            if user_should_deal == "y":
+                user_cards.append(deal_card())
+            else:
+                is_game_over = True
+
+    while computer_score != 0 and computer_score < 17:
+        computer_cards.append(deal_card())
+        computer_score = calculate_score(computer_cards)
+
+    print(f"Your final hand: {user_cards}, final score: {user_score}")
+    print(f"Computer's final hand: {computer_cards}, final score: {computer_score}")
+    print(compare(user_score, computer_score))
+
+
+while input("Do you want to play a game of Blackjack? Type 'y' or 'n' ") == "y":
+    print("\n" * 20)
+    playgame()
